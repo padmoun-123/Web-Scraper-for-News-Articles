@@ -1,0 +1,31 @@
+import requests
+from bs4 import BeautifulSoup
+
+# Function to fetch the latest headlines
+def fetch_news():
+    # URL of the news website
+    url = 'https://www.bbc.com/news'
+    
+    # Send HTTP request
+    response = requests.get(url)
+    
+    # Check if request was successful
+    if response.status_code == 200:
+        soup = BeautifulSoup(response.content, 'html.parser')
+        
+        # Find all news headlines using the HTML structure of the website
+        headlines = soup.find_all('h3', class_='gs-c-promo-heading__title')
+        
+        # Print the headlines
+        print("Latest News Headlines:")
+        for i, headline in enumerate(headlines, start=1):
+            print(f"{i}. {headline.get_text()}")
+    else:
+        print(f"Failed to retrieve news. Status code: {response.status_code}")
+
+# Main function to run the scraper
+def main():
+    fetch_news()
+
+if __name__ == "__main__":
+    main()
